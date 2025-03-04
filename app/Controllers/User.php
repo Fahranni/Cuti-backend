@@ -34,9 +34,7 @@ class User extends BaseController
     public function create()
     {
         $data = $this->request->getPost();
-        if (empty($data['id_user'])) { // Validasi tambahan
-            return $this->fail("id_user is required", 400);
-        }
+        
         if (!$this->model->save($data)) {
             return $this->fail($this->model->errors());
         }
