@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
 
@@ -10,78 +11,82 @@ header('Access-Control-Allow-Headers: Content-Type, X-Requested-With, Authorizat
 class User extends BaseController
 {
     use ResponseTrait;
-    public function __construct(){
+    public function __construct()
+    {
         $this->model = new UserModel;
     }
     public function index()
     {
         $data = $this->model->findAll();
-        return $this->respond($data,200);
+        return $this->respond($data, 200);
     }
 
     public function show($id = null)
     {
         $data = $this->model->where("id_user", $id)->findAll();
-        if($data){
-            return $this->respond($data,200);
-        }else{
+        if ($data) {
+            return $this->respond($data, 200);
+        } else {
             return $this->failNotFound("Data tidak ditemukan");
         }
-        
     }
 
-    public function create(){
+    public function create()
+    {
         $data = $this->request->getPost();
-
-        if(!$this->model->save($data)){
+        if (empty($data['id_user'])) { // Validasi tambahan
+            return $this->fail("id_user is required", 400);
+        }
+        if (!$this->model->save($data)) {
             return $this->fail($this->model->errors());
         }
-
         $response = [
             'status' => 200,
             'error' => null,
-            'message'=> [
-                'success'=> 'Berhasil Menambah Data',
+            'message' => [
+                'success' => 'Berhasil Menambah Data',
             ]
         ];
-        return $this->respond($response,200);
+        return $this->respond($response, 200);
     }
 
-    public function update($id = null){
+    public function update($id = null)
+    {
         $data = $this->request->getRawInput();
         $data['id_user'] = $id;
         $ifExist = $this->model->where('id_user', $id)->findAll();
-        if(!$ifExist){
+        if (!$ifExist) {
             return $this->failNotFound("Data tidak ditemukan");
         }
 
-        if(!$this->model->save($data)){
+        if (!$this->model->save($data)) {
             return $this->fail($this->model->errors());
         }
 
         $response = [
             'status' => 200,
             'error' => null,
-            'message'=> [
-                'success'=> 'Berhasil Mengubah Data',
+            'message' => [
+                'success' => 'Berhasil Mengubah Data',
             ]
         ];
-        return $this->respond($response,200);
+        return $this->respond($response, 200);
     }
 
-    public function delete($id = null){
+    public function delete($id = null)
+    {
         $data = $this->model->where('id_user', $id)->findAll();
-        if($data){
+        if ($data) {
             $this->model->delete($id);
             $response = [
                 'status' => 200,
                 'error' => null,
-                'message'=> [
-                    'success'=> 'Berhasil Menghapus Data',
+                'message' => [
+                    'success' => 'Berhasil Menghapus Data',
                 ]
             ];
             return $this->respondDeleted($response);
-        }else{
+        } else {
             return $this->failNotFound("Data tidak ditemukan");
         }
     }
