@@ -2,29 +2,35 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
+use App\Models\CutiModel;
+use App\Models\MahasiswaModel; // Tambahkan model untuk tabel user
 use CodeIgniter\API\ResponseTrait;
 
 header('Access-Control-Allow-Origin: *'); // Atau ganti * dengan URL Laravel Anda
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, X-Requested-With, Authorization');
-class User extends BaseController
+
+class Cuti extends BaseController
 {
-    protected $model;
     use ResponseTrait;
+    protected $cutiModel; // Ganti jadi protected agar lebih terorganisir
+    protected $mahasiswaModel;  // Tambahkan untuk akses UserModel
+
     public function __construct()
     {
-        $this->model = new UserModel();
+        $this->cutiModel = new CutiModel();
+        //$this->mahasiswaModel = new MahasiswaModel(); // Inisialisasi UserModel
     }
+
     public function index()
     {
-        $data = $this->model->findAll();
+        $data = $this->cutiModel->findAll();
         return $this->respond($data, 200);
     }
 
     public function show($id = null)
     {
-        $data = $this->model->where("id_user", $id)->findAll();
+        $data = $this->cutiModel->where("id_cuti", $id)->findAll();
         if ($data) {
             return $this->respond($data, 200);
         } else {
@@ -35,10 +41,21 @@ class User extends BaseController
     public function create()
     {
         $data = $this->request->getPost();
-        
-        if (!$this->model->save($data)) {
-            return $this->fail($this->model->errors());
+
+        // Validasi: cek apakah id_user dan username sesuai di tabel user
+        //$userCheck = $this->mahasiswaModel->where('npm', $data['npm'])->first();
+
+        /*if (!$userCheck) {
+            return $this->fail([
+                'message' => 'NPM tidak sesuai dengan data di tabel mahasiswa'
+            ], 400);
+        }*/
+
+        // Simpan data ke tabel admin
+        if (!$this->cutiModel->save($data)) {
+            return $this->fail($this->cutiModel->errors());
         }
+
         $response = [
             'status' => 200,
             'error' => null,
@@ -52,14 +69,26 @@ class User extends BaseController
     public function update($id = null)
     {
         $data = $this->request->getRawInput();
-        $data['id_user'] = $id;
-        $ifExist = $this->model->where('id_user', $id)->findAll();
+        $data['id_cuti'] = $id;
+
+        // Check if record exists in admin table
+        $ifExist = $this->cutiModel->where('id_cuti', $id)->findAll();
         if (!$ifExist) {
             return $this->failNotFound("Data tidak ditemukan");
         }
 
-        if (!$this->model->save($data)) {
-            return $this->fail($this->model->errors());
+        // Validasi: cek apakah id_user dan username sesuai di tabel user
+        //$userCheck = $this->mahasiswaModel->where('npm', $data['npm'])->first();
+
+        /*if (!$userCheck) {
+            return $this->fail([
+                'message' => 'NPM tidak sesuai dengan data di tabel mahasiswa'
+            ], 400);
+        }*/
+
+        // Simpan perubahan ke tabel admin
+        if (!$this->cutiModel->save($data)) {
+            return $this->fail($this->cutiModel->errors());
         }
 
         $response = [
@@ -74,9 +103,9 @@ class User extends BaseController
 
     public function delete($id = null)
     {
-        $data = $this->model->where('id_user', $id)->findAll();
+        $data = $this->cutiModel->where('id_cuti', $id)->findAll();
         if ($data) {
-            $this->model->delete($id);
+            $this->cutiModel->delete($id);
             $response = [
                 'status' => 200,
                 'error' => null,
