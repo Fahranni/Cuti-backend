@@ -59,6 +59,27 @@ class Kajur extends BaseController
             ], 400);
         }
 
+        $kajurCheck = $this->kajurModel->where('nama_kajur', $data['nama_kajur'])->first();
+        if ($kajurCheck) {
+            return $this->fail([
+                'message' => 'Nama Kajur sudah ada di tabel kajur'
+            ], 400);
+        }
+
+        $jurusanCheck = $this->kajurModel->where('nama_jurusan', $data['nama_jurusan'])->first();
+        if ($jurusanCheck) {
+            return $this->fail([
+                'message' => 'Nama Jurusan sudah ada di tabel kajur'
+            ], 400);
+        }
+
+        $dosenNameCheck = $this->dosenModel->where('nama_dosen', $data['nama_kajur'])->first();
+        if (!$dosenNameCheck) {
+            return $this->fail([
+                'message' => 'Nama Kajur tidak ditemukan di tabel dosen'
+            ], 400);
+        }
+
         // Simpan data ke tabel admin
         if (!$this->kajurModel->save($data)) {
             return $this->fail($this->kajurModel->errors());
@@ -99,6 +120,34 @@ class Kajur extends BaseController
                 'message' => 'ID User, username, atau NIDN tidak sesuai dengan data di tabel user atau dosen'
             ], 400);
         }
+
+        $kajurCheck = $this->kajurModel->where('nama_kajur', $data['nama_kajur'])
+            ->where('id_kajur !=', $id)
+            ->first();
+        if ($kajurCheck) {
+            return $this->fail([
+                'message' => 'Nama Kajur sudah ada di tabel kajur'
+            ], 400);
+        }
+
+
+        $jurusanCheck = $this->kajurModel->where('nama_jurusan', $data['nama_jurusan'])
+            ->where('id_kajur !=', $id)
+            ->first();
+        if ($jurusanCheck) {
+            return $this->fail([
+                'message' => 'Nama Jurusan sudah ada di tabel kajur'
+            ], 400);
+        }
+
+
+        $dosenNameCheck = $this->dosenModel->where('nama_dosen', $data['nama_kajur'])->first();
+        if (!$dosenNameCheck) {
+            return $this->fail([
+                'message' => 'Nama Kajur tidak ditemukan di tabel dosen'
+            ], 400);
+        }
+
 
         // Simpan perubahan ke tabel admin
         if (!$this->kajurModel->save($data)) {

@@ -46,10 +46,18 @@ class Dosen extends BaseController
         $userCheck = $this->userModel->where('id_user', $data['id_user'])
             ->where('username', $data['nama_dosen'])
             ->first();
+            
 
         if (!$userCheck) {
             return $this->fail([
                 'message' => 'ID User dan username tidak sesuai dengan data di tabel user'
+            ], 400);
+        }
+
+        $dosenCheck = $this->dosenModel->where('nama_dosen', $data['nama_dosen'])->first();
+        if ($dosenCheck) {
+            return $this->fail([
+                'message' => 'Nama Dosen sudah ada di tabel dosen'
             ], 400);
         }
 
@@ -89,6 +97,17 @@ class Dosen extends BaseController
                 'message' => 'ID User dan username tidak sesuai dengan data di tabel user'
             ], 400);
         }
+
+        
+            $dosenCheck = $this->dosenModel->where('nama_dosen', $data['nama_dosen'])
+                                           ->where('id_dosen !=', $id)
+                                           ->first();
+            if ($dosenCheck) {
+                return $this->fail([
+                    'message' => 'Nama Dosen sudah ada di tabel dosen'
+                ], 400);
+            }
+        
 
         // Simpan perubahan ke tabel admin
         if (!$this->dosenModel->save($data)) {
