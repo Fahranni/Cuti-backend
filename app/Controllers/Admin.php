@@ -2,35 +2,35 @@
 
 namespace App\Controllers;
 
-use App\Models\CutiModel;
-use App\Models\MahasiswaModel; // Tambahkan model untuk tabel user
+use App\Models\AdminModel;
+use App\Models\UserModel; // Tambahkan model untuk tabel user
 use CodeIgniter\API\ResponseTrait;
 
 header('Access-Control-Allow-Origin: *'); // Atau ganti * dengan URL Laravel Anda
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, X-Requested-With, Authorization');
 
-class Cuti extends BaseController
+class Admin extends BaseController
 {
     use ResponseTrait;
-    protected $cutiModel; // Ganti jadi protected agar lebih terorganisir
-    protected $mahasiswaModel;  // Tambahkan untuk akses UserModel
+    protected $adminModel; // Ganti jadi protected agar lebih terorganisir
+    protected $userModel;  // Tambahkan untuk akses UserModel
 
     public function __construct()
     {
-        $this->cutiModel = new CutiModel();
-        $this->mahasiswaModel = new MahasiswaModel(); // Inisialisasi UserModel
+        $this->adminModel = new AdminModel();
+        $this->userModel = new UserModel(); // Inisialisasi UserModel
     }
 
     public function index()
     {
-        $data = $this->cutiModel->findAll();
+        $data = $this->adminModel->findAll();
         return $this->respond($data, 200);
     }
 
     public function show($id = null)
     {
-        $data = $this->cutiModel->where("id_cuti", $id)->findAll();
+        $data = $this->adminModel->where("id_admin", $id)->findAll();
         if ($data) {
             return $this->respond($data, 200);
         } else {
@@ -43,17 +43,19 @@ class Cuti extends BaseController
         $data = $this->request->getPost();
 
         // Validasi: cek apakah id_user dan username sesuai di tabel user
-        $userCheck = $this->mahasiswaModel->where('npm', $data['npm'])->first();
+        $userCheck = $this->userModel->where('id_user', $data['id_user'])
+            ->where('username', $data['username'])
+            ->first();
 
         if (!$userCheck) {
             return $this->fail([
-                'message' => 'NPM tidak sesuai dengan data di tabel mahasiswa'
+                'message' => 'ID User dan username tidak sesuai dengan data di tabel user'
             ], 400);
         }
 
         // Simpan data ke tabel admin
-        if (!$this->cutiModel->save($data)) {
-            return $this->fail($this->cutiModel->errors());
+        if (!$this->adminModel->save($data)) {
+            return $this->fail($this->adminModel->errors());
         }
 
         $response = [
@@ -69,26 +71,28 @@ class Cuti extends BaseController
     public function update($id = null)
     {
         $data = $this->request->getRawInput();
-        $data['id_cuti'] = $id;
+        $data['id_admin'] = $id;
 
-        // Check if record exists in admin table
-        $ifExist = $this->cutiModel->where('id_cuti', $id)->findAll();
+
+        $ifExist = $this->adminModel->where('id_admin', $id)->findAll();
         if (!$ifExist) {
             return $this->failNotFound("Data tidak ditemukan");
         }
 
         // Validasi: cek apakah id_user dan username sesuai di tabel user
-        $userCheck = $this->mahasiswaModel->where('npm', $data['npm'])->first();
+        $userCheck = $this->userModel->where('id_user', $data['id_user'])
+            ->where('username', $data['username'])
+            ->first();
 
         if (!$userCheck) {
             return $this->fail([
-                'message' => 'NPM tidak sesuai dengan data di tabel mahasiswa'
+                'message' => 'ID User dan username tidak sesuai dengan data di tabel user'
             ], 400);
         }
 
-        // Simpan perubahan ke tabel admin
-        if (!$this->cutiModel->save($data)) {
-            return $this->fail($this->cutiModel->errors());
+
+        if (!$this->adminModel->save($data)) {
+            return $this->fail($this->adminModel->errors());
         }
 
         $response = [
@@ -103,9 +107,9 @@ class Cuti extends BaseController
 
     public function delete($id = null)
     {
-        $data = $this->cutiModel->where('id_cuti', $id)->findAll();
+        $data = $this->adminModel->where('id_admin', $id)->findAll();
         if ($data) {
-            $this->cutiModel->delete($id);
+            $this->adminModel->delete($id);
             $response = [
                 'status' => 200,
                 'error' => null,

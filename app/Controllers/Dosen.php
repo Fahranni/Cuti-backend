@@ -44,8 +44,8 @@ class Dosen extends BaseController
 
         // Validasi: cek apakah id_user dan username sesuai di tabel user
         $userCheck = $this->userModel->where('id_user', $data['id_user'])
-                                     ->where('username', $data['nama_dosen'])
-                                     ->first();
+            ->where('username', $data['nama_dosen'])
+            ->first();
 
         if (!$userCheck) {
             return $this->fail([
@@ -81,8 +81,8 @@ class Dosen extends BaseController
 
         // Validasi: cek apakah id_user dan username sesuai di tabel user
         $userCheck = $this->userModel->where('id_user', $data['id_user'])
-                                     ->where('username', $data['nama_dosen'])
-                                     ->first();
+            ->where('username', $data['nama_dosen'])
+            ->first();
 
         if (!$userCheck) {
             return $this->fail([
