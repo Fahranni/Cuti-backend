@@ -3,23 +3,23 @@
 namespace App\Controllers;
 
 use App\Models\CutiModel;
-use App\Models\MahasiswaModel; // Tambahkan model untuk tabel user
+use App\Models\MahasiswaModel;
 use CodeIgniter\API\ResponseTrait;
 
-header('Access-Control-Allow-Origin: *'); // Atau ganti * dengan URL Laravel Anda
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type, X-Requested-With, Authorization');
 
 class Cuti extends BaseController
 {
     use ResponseTrait;
-    protected $cutiModel; // Ganti jadi protected agar lebih terorganisir
-    protected $mahasiswaModel;  // Tambahkan untuk akses UserModel
+    protected $cutiModel;
+    protected $mahasiswaModel;
 
     public function __construct()
     {
         $this->cutiModel = new CutiModel();
-        $this->mahasiswaModel = new MahasiswaModel(); // Inisialisasi UserModel
+        $this->mahasiswaModel = new MahasiswaModel();
     }
 
     public function index()
@@ -42,16 +42,22 @@ class Cuti extends BaseController
     {
         $data = $this->request->getPost();
 
-        // Validasi: cek apakah id_user dan username sesuai di tabel user
-        $userCheck = $this->mahasiswaModel->where('npm', $data['npm'])->first();
-
-        if (!$userCheck) {
+        // Validasi: cek apakah npm ada di tabel mahasiswa
+        $mahasiswaCheck = $this->mahasiswaModel->where('npm', $data['npm'])->first();
+        if (!$mahasiswaCheck) {
             return $this->fail([
-                'message' => 'NPM tidak sesuai dengan data di tabel mahasiswa'
+                'message' => 'NPM tidak ditemukan di tabel mahasiswa'
             ], 400);
         }
 
-        // Simpan data ke tabel admin
+        $cutiCheck = $this->cutiModel->where('npm', $data['npm'])->first();
+        if ($cutiCheck) {
+            return $this->fail([
+                'message' => 'NPM sudah terdaftar untuk cuti, mahasiswa hanya boleh mengajukan cuti sekali'
+            ], 400);
+        }
+
+        // Simpan data ke tabel cuti
         if (!$this->cutiModel->save($data)) {
             return $this->fail($this->cutiModel->errors());
         }
@@ -71,22 +77,31 @@ class Cuti extends BaseController
         $data = $this->request->getRawInput();
         $data['id_cuti'] = $id;
 
-        // Check if record exists in admin table
-        $ifExist = $this->cutiModel->where('id_cuti', $id)->findAll();
+        // Check if record exists in cuti table
+        $ifExist = $this->cutiModel->where('id_cuti', $id)->first();
         if (!$ifExist) {
             return $this->failNotFound("Data tidak ditemukan");
         }
 
-        // Validasi: cek apakah id_user dan username sesuai di tabel user
-        $userCheck = $this->mahasiswaModel->where('npm', $data['npm'])->first();
-
-        if (!$userCheck) {
+        // Validasi: cek apakah npm ada di tabel mahasiswa
+        $mahasiswaCheck = $this->mahasiswaModel->where('npm', $data['npm'])->first();
+        if (!$mahasiswaCheck) {
             return $this->fail([
-                'message' => 'NPM tidak sesuai dengan data di tabel mahasiswa'
+                'message' => 'NPM tidak ditemukan di tabel mahasiswa'
             ], 400);
         }
 
-        // Simpan perubahan ke tabel admin
+        // Validasi: cek apakah npm belum ada di tabel cuti (kecuali data saat ini)
+        $cutiCheck = $this->cutiModel->where('npm', $data['npm'])
+                                     ->where('id_cuti !=', $id) // Kecualikan data saat ini
+                                     ->first();
+        if ($cutiCheck) {
+            return $this->fail([
+                'message' => 'NPM sudah digunakan untuk cuti lain'
+            ], 400);
+        }
+
+        // Simpan perubahan ke tabel cuti
         if (!$this->cutiModel->save($data)) {
             return $this->fail($this->cutiModel->errors());
         }
