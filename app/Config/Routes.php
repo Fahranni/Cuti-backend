@@ -6,6 +6,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
+$routes->get('mahasiswa/showName/(:any)', 'Mahasiswa::showName/$1');
 $routes->resource('user');
 $routes->resource('dosen');
 $routes->resource('cuti');

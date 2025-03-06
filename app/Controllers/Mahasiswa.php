@@ -44,6 +44,32 @@ class Mahasiswa extends BaseController
         }
     }
 
+    public function showName($nama = null)
+{
+    try {
+        // Cek apakah parameter nama kosong
+        if (empty($nama)) {
+            return $this->fail('Nama mahasiswa harus diisi', 400);
+        }
+
+        // Query untuk mencari data berdasarkan nama
+        $data = $this->mahasiswaModel->where('nama_mahasiswa', $nama)->findAll();
+
+        // Cek apakah data ditemukan
+        if (!empty($data)) {
+            return $this->respond([
+                'status' => 200,
+                'message' => 'Data mahasiswa ditemukan',
+                'data' => $data
+            ], 200);
+        } else {
+            return $this->failNotFound('Data mahasiswa dengan nama ' . $nama . ' tidak ditemukan');
+        }
+    } catch (\Exception $e) {
+        return $this->fail('Terjadi kesalahan: ' . $e->getMessage(), 500);
+    }
+}
+
     public function create()
     {
         $data = $this->request->getPost();
