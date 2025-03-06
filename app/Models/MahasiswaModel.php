@@ -19,8 +19,8 @@ class MahasiswaModel extends Model{
         "agama",
         "angkatan",
         "program_studi",
-        "jurusan",
-        "semester",
+        
+        
         "no_hp",
         "email",
         "kelas",
