@@ -8,6 +8,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('mahasiswa/showName/(:any)', 'Mahasiswa::showName/$1');
 $routes->get('user/showName/(:any)', 'User::showName/$1');
+$routes->post('/riwayatCuti', 'RiwayatMhs::getCuti');
 $routes->resource('user');
 $routes->resource('dosen');
 $routes->resource('cuti');
