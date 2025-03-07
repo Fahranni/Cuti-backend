@@ -10,6 +10,8 @@ $routes->get('mahasiswa/showName/(:any)', 'Mahasiswa::showName/$1');
 $routes->get('user/showName/(:any)', 'User::showName/$1');
 $routes->post('/riwayatCuti', 'RiwayatMhs::getCuti');
 $routes->post('/mhsberanda', 'MhsBeranda::getMahasiswa');
+$routes->post('/pengajuancuti', 'PengajuanCuti::getMahasiswaCuti');
+$routes->post('/riwayatadmin', 'RiwayatAdmin::getRiwayatAdmin');
 $routes->resource('user');
 $routes->resource('dosen');
 $routes->resource('cuti');

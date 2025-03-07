@@ -5,6 +5,10 @@ namespace App\Controllers;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\MhsBerandaModel;
 
+header('Access-Control-Allow-Origin: *'); // Atau ganti * dengan URL Laravel Anda
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Headers: Content-Type, X-Requested-With, Authorization');
+
 class MhsBeranda extends BaseController
 {
     use ResponseTrait;
