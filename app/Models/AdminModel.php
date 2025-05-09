@@ -7,9 +7,7 @@ class AdminModel extends Model{
     protected $primaryKey = "id_admin";
     
     protected $allowedFields = [
-        
         "id_user",
         "username",
-        
     ];
 }
