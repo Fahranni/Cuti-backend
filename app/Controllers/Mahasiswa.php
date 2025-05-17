@@ -100,16 +100,6 @@ class Mahasiswa extends BaseController
             );
         }
 
-        $dosenCheck = $this->dosenModel
-            ->where("id_dosen", $data["id_dosen"])
-            ->first();
-        if (!$dosenCheck) {
-            return $this->fail(
-                ["message" => "ID Dosen tidak ditemukan di tabel dosen"],
-                400
-            );
-        }
-
         $kajurCheck = $this->kajurModel
             ->where("id_kajur", $data["id_kajur"])
             ->first();
@@ -161,16 +151,6 @@ class Mahasiswa extends BaseController
                     "message" =>
                         "ID User dan username tidak sesuai dengan data di tabel user",
                 ],
-                400
-            );
-        }
-
-        $dosenCheck = $this->dosenModel
-            ->where("id_dosen", $data["id_dosen"])
-            ->first();
-        if (!$dosenCheck) {
-            return $this->fail(
-                ["message" => "ID Dosen tidak ditemukan di tabel dosen"],
                 400
             );
         }
