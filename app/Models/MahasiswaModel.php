@@ -9,6 +9,7 @@ class MahasiswaModel extends Model
     protected $useAutoIncrement = false;
 
     protected $allowedFields = [
+        "npm",
         "id_user",
         "id_dosen",
         "id_kajur",
@@ -18,9 +19,8 @@ class MahasiswaModel extends Model
         "alamat",
         "agama",
         "angkatan",
-        "program_studi",
         "semester",
-
+        "program_studi",
         "no_hp",
         "email",
     ];
