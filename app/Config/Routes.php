@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get("/", "Home::index");
 $routes->get("mahasiswa/showName/(:any)", 'Mahasiswa::showName/$1');
+$routes->get("cuti/npm/(:any)", 'Cuti::getCutiByNpm/$1');
 $routes->get("user/showName/(:any)", 'User::showName/$1');
 $routes->get("/user/showName/(:any)", 'UserController::showName/$1');
 $routes->post("/riwayatCuti", "RiwayatMhs::getCuti");
