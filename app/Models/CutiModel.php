@@ -14,5 +14,6 @@ class CutiModel extends Model
         "tgl_pengajuan",
         "semester",
         "dokumen_pendukung",
+        "alasan",
     ];
 }
