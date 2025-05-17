@@ -2,14 +2,11 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class UserModel extends Model{
+class UserModel extends Model
+{
     protected $table = "user";
     protected $primaryKey = "id_user";
-    
-    protected $allowedFields = [
-        
-        "username",
-        "password",
-        "level",
-    ];
+    protected $useAutoIncrement = false;
+
+    protected $allowedFields = ["username", "password", "level"];
 }
