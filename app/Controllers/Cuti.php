@@ -80,12 +80,10 @@ class Cuti extends BaseController
         $data = $this->request->getJSON(true); // ambil sebagai array
 
         // Set npm dari URL ke data supaya sinkron
-        $data['npm'] = $npm;
+        $data["npm"] = $npm;
 
         // Validasi: cek apakah npm ada di tabel mahasiswa
-        $mahasiswaCheck = $this->mahasiswaModel
-            ->where("npm", $npm)
-            ->first();
+        $mahasiswaCheck = $this->mahasiswaModel->where("npm", $npm)->first();
         if (!$mahasiswaCheck) {
             return $this->fail(
                 [
@@ -149,19 +147,6 @@ class Cuti extends BaseController
             return $this->fail(
                 [
                     "message" => "NPM tidak ditemukan di tabel mahasiswa",
-                ],
-                400
-            );
-        }
-
-        $cutiCheck = $this->cutiModel
-            ->where("npm", $data["npm"])
-            ->where("id_cuti !=", $id)
-            ->first();
-        if ($cutiCheck) {
-            return $this->fail(
-                [
-                    "message" => "NPM sudah digunakan untuk cuti lain",
                 ],
                 400
             );
