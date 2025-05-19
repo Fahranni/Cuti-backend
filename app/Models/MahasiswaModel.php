@@ -6,7 +6,7 @@ class MahasiswaModel extends Model
 {
     protected $table = "mahasiswa";
     protected $primaryKey = "npm";
-    protected $useAutoIncrement = true;
+    protected $useAutoIncrement = false;
 
     protected $allowedFields = [
         "npm",
