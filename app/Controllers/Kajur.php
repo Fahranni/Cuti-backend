@@ -35,7 +35,7 @@ class Kajur extends BaseController
 
     public function show($id = null)
     {
-        $data = $this->kajurModel->where("id_dosen", $id)->findAll();
+        $data = $this->kajurModel->where("id_kajur", $id)->findAll();
         if ($data) {
             return $this->respond($data, 200);
         } else {
@@ -186,5 +186,14 @@ class Kajur extends BaseController
         } else {
             return $this->failNotFound("Data tidak ditemukan");
         }
+    }
+
+    public function options($id = null)
+    {
+        return $this->response
+            ->setHeader('Access-Control-Allow-Origin', '*')
+            ->setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+            ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+            ->setStatusCode(200);
     }
 }

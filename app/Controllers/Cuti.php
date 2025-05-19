@@ -43,15 +43,12 @@ class Cuti extends BaseController
     public function getCutiByNpm($npm = null)
     {
         try {
-            // Cek apakah parameter npm kosong
             if (empty($npm)) {
                 return $this->fail("NPM mahasiswa harus diisi", 400);
             }
 
-            // Query untuk mencari data berdasarkan nama
             $data = $this->cutiModel->where("npm", $npm)->findAll();
 
-            // Cek apakah data ditemukan
             if (!empty($data)) {
                 return $this->respond(
                     [
@@ -71,13 +68,23 @@ class Cuti extends BaseController
         }
     }
 
-    public function create()
+    // --- TAMBAHKAN METHOD INI untuk opsi B (POST /cuti/{npm}) ---
+    public function createWithNpm($npm = null)
     {
-        $data = $this->request->getPost();
+        // Cek apakah parameter npm ada
+        if (!$npm) {
+            return $this->fail("NPM tidak boleh kosong", 400);
+        }
+
+        // Ambil data POST JSON dari request body
+        $data = $this->request->getJSON(true); // ambil sebagai array
+
+        // Set npm dari URL ke data supaya sinkron
+        $data['npm'] = $npm;
 
         // Validasi: cek apakah npm ada di tabel mahasiswa
         $mahasiswaCheck = $this->mahasiswaModel
-            ->where("npm", $data["npm"])
+            ->where("npm", $npm)
             ->first();
         if (!$mahasiswaCheck) {
             return $this->fail(
@@ -88,7 +95,8 @@ class Cuti extends BaseController
             );
         }
 
-        $cutiCheck = $this->cutiModel->where("npm", $data["npm"])->first();
+        // Cek apakah mahasiswa sudah ada pengajuan cuti
+        $cutiCheck = $this->cutiModel->where("npm", $npm)->first();
         if ($cutiCheck) {
             return $this->fail(
                 [
@@ -114,18 +122,26 @@ class Cuti extends BaseController
         return $this->respond($response, 200);
     }
 
+    // METHOD create() yang lama tetap ada untuk POST /cuti (tanpa npm di URL)
+    public function create()
+    {
+        $data = $this->request->getPost();
+
+        // Validasi dan logic yang sama seperti di createWithNpm...
+        // Bisa kamu pertahankan atau hapus jika tidak digunakan.
+        // (Sesuai kebutuhan aplikasi kamu)
+    }
+
     public function update($id = null)
     {
         $data = $this->request->getRawInput();
         $data["id_cuti"] = $id;
 
-        // Check if record exists in cuti table
         $ifExist = $this->cutiModel->where("id_cuti", $id)->first();
         if (!$ifExist) {
             return $this->failNotFound("Data tidak ditemukan");
         }
 
-        // Validasi: cek apakah npm ada di tabel mahasiswa
         $mahasiswaCheck = $this->mahasiswaModel
             ->where("npm", $data["npm"])
             ->first();
@@ -138,10 +154,9 @@ class Cuti extends BaseController
             );
         }
 
-        // Validasi: cek apakah npm belum ada di tabel cuti (kecuali data saat ini)
         $cutiCheck = $this->cutiModel
             ->where("npm", $data["npm"])
-            ->where("id_cuti !=", $id) // Kecualikan data saat ini
+            ->where("id_cuti !=", $id)
             ->first();
         if ($cutiCheck) {
             return $this->fail(
@@ -152,7 +167,6 @@ class Cuti extends BaseController
             );
         }
 
-        // Simpan perubahan ke tabel cuti
         if (!$this->cutiModel->save($data)) {
             return $this->fail($this->cutiModel->errors());
         }

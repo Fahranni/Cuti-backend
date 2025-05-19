@@ -1,19 +1,25 @@
 <?php
+
 namespace App\Models;
+
 use CodeIgniter\Model;
 
 class CutiModel extends Model
 {
-    protected $table = "cuti";
-    protected $primaryKey = "id_cuti";
-    protected $useAutoIncrement = false;
+    protected $table      = 'cuti';
+    protected $primaryKey = 'id_cuti'; // <--- WAJIB ADA!
 
     protected $allowedFields = [
-        "npm",
-        "status",
-        "tgl_pengajuan",
-        "semester",
-        "dokumen_pendukung",
-        "alasan",
+        'npm',
+        'semester',
+        'tgl_pengajuan',
+        'dokumen_pendukung',
+        'alasan',
+        'status', 
+        
+        // tambahkan semua kolom lain yang boleh diisi
     ];
+
+    protected $useAutoIncrement = true;  // <--- Pastikan ini true
+    protected $returnType = 'array';     // atau 'object' sesuai kebutuhan
 }
