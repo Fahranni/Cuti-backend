@@ -6,7 +6,7 @@ class AdminModel extends Model
 {
     protected $table = "admin";
     protected $primaryKey = "id_admin";
-    protected $useAutoIncrement = false;
+    protected $useAutoIncrement = true;
 
     protected $allowedFields = ["id_user", "username"];
 }

@@ -124,10 +124,43 @@ class Cuti extends BaseController
     public function create()
     {
         $data = $this->request->getPost();
+        $mahasiswaCheck = $this->mahasiswaModel
+            ->where("npm", $data["npm"])
+            ->first();
+        if (!$mahasiswaCheck) {
+            return $this->fail(
+                [
+                    "message" => "NPM tidak ditemukan di tabel mahasiswa",
+                ],
+                400
+            );
+        }
 
-        // Validasi dan logic yang sama seperti di createWithNpm...
-        // Bisa kamu pertahankan atau hapus jika tidak digunakan.
-        // (Sesuai kebutuhan aplikasi kamu)
+        // Cek apakah mahasiswa sudah ada pengajuan cuti
+        $cutiCheck = $this->cutiModel->where("npm", $data["npm"])->first();
+        if ($cutiCheck) {
+            return $this->fail(
+                [
+                    "message" =>
+                        "NPM sudah terdaftar untuk cuti, mahasiswa hanya boleh mengajukan cuti sekali",
+                ],
+                400
+            );
+        }
+
+        // Simpan data ke tabel cuti
+        if (!$this->cutiModel->save($data)) {
+            return $this->fail($this->cutiModel->errors());
+        }
+
+        $response = [
+            "status" => 200,
+            "error" => null,
+            "message" => [
+                "success" => "Berhasil Menambah Data",
+            ],
+        ];
+        return $this->respond($response, 200);
     }
 
     public function update($id = null)
