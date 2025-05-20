@@ -203,6 +203,7 @@ class Mahasiswa extends BaseController
             return $this->failNotFound("Data dengan NPM $npm tidak ditemukan.");
         }
     }
+
     public function options($npm = null)
     {
         header("Access-Control-Allow-Origin: *");

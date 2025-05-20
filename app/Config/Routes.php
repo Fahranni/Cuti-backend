@@ -45,6 +45,7 @@ $routes->post("/viewriwayatmahasiswa", "RiwayatMhsView::getMahasiswaCuti");
 $routes->options("kajur/(:segment)", 'Kajur::options/$1');
 $routes->get("kajur/(:segment)", 'Kajur::show/$1');
 $routes->resource("kajur");
+$routes->post("/viewberandakajur", "KajurBrnd::getBerandaKajurCntrl");
 
 // Admin
 $routes->resource("admin");
