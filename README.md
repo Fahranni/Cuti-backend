@@ -1,68 +1,97 @@
-# CodeIgniter 4 Application Starter
+# Backend API Project - CodeIgniter 4
 
-## What is CodeIgniter?
+Selamat datang di proyek Backend API yang dibangun menggunakan CodeIgniter 4. README ini berisi panduan langkah demi langkah untuk menyiapkan dan menjalankan proyek ini di mesin lokal Anda.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+# Prasyarat
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+Sebelum memulai, pastikan Anda telah menginstal perangkat lunak berikut:
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+- PHP 7.3 atau lebih tinggi
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- Composer (untuk mengelola dependensi)
 
-## Installation & updates
+- MySQL (untuk database)
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+- Apache (opsional, untuk lingkungan produksi)
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+# Langkah-langkah Penyiapan
 
-## Setup
+Ikuti langkah-langkah berikut untuk menyiapkan proyek:
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+1. Kloning Repositori
 
-## Important Change with index.php
+Jalankan perintah berikut untuk mengkloning repositori proyek:
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+`git clone <repository_url>`
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+Ganti <repository_url> dengan URL repositori Git yang sebenarnya.
 
-**Please** read the user guide for a better explanation of how CI4 works!
+2. Masuk ke Direktori Proyek
 
-## Repository Management
+Pindah ke direktori proyek yang baru saja dikloning:
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+`cd <project_name>`
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+Ganti <project_name> dengan nama direktori proyek Anda.
 
-## Server Requirements
+3. Salin File `env`
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+Salin file `env` menjadi `.env` untuk konfigurasi lingkungan:
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+`cp env .env`
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+4. Konfigurasi File `.env`
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+Buka file `.env` dengan editor teks dan atur variabel berikut:
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+- app.baseURL: Tetapkan URL dasar aplikasi, misalnya `http://localhost:8080` untuk pengembangan lokal.
+
+- Pengaturan database:
+
+- `database.default.hostname = localhost`
+
+- `database.default.database = nama_database_anda`
+
+- `database.default.username = nama_pengguna_anda`
+
+- `database.default.password = kata_sandi_anda`
+
+- `database.default.DBDriver = MySQLi`
+
+Ganti `nama_database_anda`, `nama_pengguna_anda`, dan `kata_sandi_anda` dengan kredensial database Anda yang sebenarnya.
+
+5. Instal Dependensi
+
+Jalankan perintah berikut untuk menginstal dependensi proyek menggunakan Composer:
+
+`composer install`
+
+6. Buat Database
+
+Buat database secara manual di MySQL menggunakan alat seperti phpMyAdmin atau perintah MySQL di terminal. Pastikan nama database sesuai dengan yang ditentukan di file `.env`.
+
+7. Jalankan Migrasi Database
+
+Siapkan tabel database dengan menjalankan migrasi:
+
+`php spark migrate`
+
+# Menjalankan Server
+
+Untuk pengembangan lokal, Anda dapat menggunakan server PHP bawaan:
+
+`php spark serve`
+
+Server akan berjalan di http://localhost:8080 secara default. Anda dapat mengakses endpoint API dari URL ini.
+
+Untuk lingkungan produksi, konfigurasikan Apache untuk melayani direktori public dari proyek. Pastikan document root mengarah ke direktori public dan atur virtual host jika diperlukan.
+
+# Menguji API
+
+Uji endpoint API menggunakan alat seperti Postman atau curl. Contohnya, untuk membuat permintaan GET ke /api/users, gunakan:
+
+`curl http://localhost:8080/api/users`
+
+Ganti /api/users dengan endpoint API yang ingin Anda uji.
+
+Selesai! Proyek backend API Anda sekarang seharusnya sudah berjalan. Jika Anda mengalami masalah, lihat Panduan Pengguna CodeIgniter 4 atau cari bantuan dari komunitas atau internet.
