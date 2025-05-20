@@ -92,6 +92,6 @@ Uji endpoint API menggunakan alat seperti Postman atau curl. Contohnya, untuk me
 
 `curl http://localhost:8080/api/users`
 
-Ganti /api/users dengan endpoint API yang ingin Anda uji.
+Ganti /api/users dengan endpoint API yang ingin Anda uji misal `http://localhost:8080/mahasiswa`.
 
-Selesai! Proyek backend API Anda sekarang seharusnya sudah berjalan. Jika Anda mengalami masalah, lihat Panduan Pengguna CodeIgniter 4 atau cari bantuan dari komunitas atau internet.
+Selesai. Proyek backend API Anda sekarang seharusnya sudah berjalan. Jika Anda mengalami masalah, lihat Panduan Pengguna CodeIgniter 4 atau cari bantuan dari komunitas atau internet.
