@@ -58,6 +58,8 @@ Buka file `.env` dengan editor teks dan atur variabel berikut:
 
 - `database.default.DBDriver = MySQLi`
 
+- `database.default.port = 3306`
+
 Ganti `nama_database_anda`, `nama_pengguna_anda`, dan `kata_sandi_anda` dengan kredensial database Anda yang sebenarnya.
 
 5. Instal Dependensi
