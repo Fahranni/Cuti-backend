@@ -96,4 +96,14 @@ Uji endpoint API menggunakan alat seperti Postman atau curl. Contohnya, untuk me
 
 Ganti /api/users dengan endpoint API yang ingin Anda uji misal `http://localhost:8080/mahasiswa`.
 
+Untuk Uji API di Postman
+
+- GET: `http://localhost:8080/mahasiswa`
+
+- POST: `http://localhost:8080/mahasiswa`
+
+- PUT: `http://localhost:8080/mahasiswa/{npm}`
+
+- DELETE: `http://localhost:8080/mahasiswa/{npm}`
+
 Selesai. Proyek backend API Anda sekarang seharusnya sudah berjalan. Jika Anda mengalami masalah, lihat Panduan Pengguna CodeIgniter 4 atau cari bantuan dari komunitas atau internet.
