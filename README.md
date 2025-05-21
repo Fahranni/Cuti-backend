@@ -48,7 +48,7 @@ Buka file `.env` dengan editor teks dan atur variabel berikut:
 
 - Pengaturan database:
 
-- `database.default.hostname = localhost`
+- `database.default.hostname = localhost / 127.0.0.1`
 
 - `database.default.database = nama_database_anda`
 
@@ -98,6 +98,8 @@ Ganti /api/users dengan endpoint API yang ingin Anda uji misal `http://localhost
 
 Untuk Uji API di Postman
 
+1. Mahasiswa
+
 - GET: `http://localhost:8080/mahasiswa`
 
 - POST: `http://localhost:8080/mahasiswa`
@@ -105,5 +107,45 @@ Untuk Uji API di Postman
 - PUT: `http://localhost:8080/mahasiswa/{npm}`
 
 - DELETE: `http://localhost:8080/mahasiswa/{npm}`
+
+2. Kajur
+
+- GET `http://localhost:8080/kajur`
+
+- POST `http://localhost:8080/kajur`
+
+- PUT `http://localhost:8080/kajur/{id_kajur}`
+
+- DELETE `http://localhost:8080/delete/{id_kajur}`
+
+3. Cuti
+
+- GET `http://localhost:8080/cuti`
+
+- POST `http://localhost:8080/cuti`
+
+- PUT `http://localhost:8080/cuti/{npm}`
+
+- DELETE `http://localhost:8080/cuti/{npm}`
+
+4. User
+
+- GET `http://localhost:8080/user`
+
+- POST `http://localhost:8080/user`
+
+- PUT `http://localhost:8080/user/{id_user}`
+
+- DELETE `http://localhost:8080/user/{id_user}`
+
+5. Admin
+
+- GET `http://localhost:8080/admin`
+
+- POST `http://localhost:8080/admin`
+
+- PUT `http://localhost:8080/admin/{id_admin}`
+
+- DELETE `http://localhost:8080/admin/{id_admin}`
 
 Selesai. Proyek backend API Anda sekarang seharusnya sudah berjalan. Jika Anda mengalami masalah, lihat Panduan Pengguna CodeIgniter 4 atau cari bantuan dari komunitas atau internet.
