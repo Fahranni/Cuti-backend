@@ -27,7 +27,7 @@ class Cuti extends BaseController
     public function index()
     {
         $data = $this->cutiModel->findAll();
-        return $this->respond($data, 200);
+        return $this->respond($data);
     }
 
     public function show($id = null)

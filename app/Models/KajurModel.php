@@ -6,7 +6,7 @@ class KajurModel extends Model
 {
     protected $table = "kajur";
     protected $primaryKey = "id_kajur";
-    protected $useAutoIncrement = false;
+    protected $useAutoIncrement = true;
 
     protected $allowedFields = [
         "id_user",

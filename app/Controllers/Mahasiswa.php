@@ -8,6 +8,13 @@ use App\Models\KajurModel;
 use App\Models\MahasiswaModel;
 use CodeIgniter\API\ResponseTrait;
 
+// Menambahkan Header CORS Global
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header(
+    "Access-Control-Allow-Headers: Content-Type, X-Requested-With, Authorization"
+);
+
 class Mahasiswa extends BaseController
 {
     use ResponseTrait;
@@ -22,13 +29,6 @@ class Mahasiswa extends BaseController
         $this->dosenModel = new DosenModel();
         $this->mahasiswaModel = new MahasiswaModel();
         $this->kajurModel = new KajurModel();
-
-        // Menambahkan Header CORS Global
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-        header(
-            "Access-Control-Allow-Headers: Content-Type, X-Requested-With, Authorization"
-        );
     }
 
     public function index()
@@ -94,7 +94,7 @@ class Mahasiswa extends BaseController
             return $this->fail(
                 [
                     "message" =>
-                        "ID User tidak sesuai dengan yang ada di tabel user",
+                        "ID User tidak sesuai dengan yang ada di tabel user / Nama mahasiswa tidak ada di table user",
                 ],
                 400
             );
@@ -180,17 +180,6 @@ class Mahasiswa extends BaseController
 
     public function delete($npm = null)
     {
-        // Tambahkan Header CORS di setiap request DELETE
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: DELETE");
-        header(
-            "Access-Control-Allow-Headers: Content-Type, X-Requested-With, Authorization"
-        );
-
-        if ($npm === null) {
-            return $this->fail("NPM tidak diberikan.", 400);
-        }
-
         $mahasiswa = $this->mahasiswaModel->where("npm", $npm)->first();
 
         if ($mahasiswa) {
@@ -202,16 +191,5 @@ class Mahasiswa extends BaseController
         } else {
             return $this->failNotFound("Data dengan NPM $npm tidak ditemukan.");
         }
-    }
-
-    public function options($npm = null)
-    {
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-        header(
-            "Access-Control-Allow-Headers: Content-Type, X-Requested-With, Authorization"
-        );
-        header("Access-Control-Max-Age: 86400"); // Cache preflight selama 1 hari
-        return $this->respond(["status" => 200], 200);
     }
 }

@@ -17,7 +17,6 @@ $routes->put("user/(:segment)", "User::update/$1");
 $routes->get("mahasiswa", "Mahasiswa::index");
 $routes->delete("mahasiswa/(:any)", 'Mahasiswa::delete/$1');
 $routes->delete("user/(:any)", 'User::delete/$1');
-$routes->options("mahasiswa/(:segment)", "Mahasiswa::options");
 $routes->post("mahasiswa", "Mahasiswa::create"); // <-- ini penting
 $routes->post("user", "User::create");
 $routes->put("mahasiswa/(:segment)", "Mahasiswa::update/$1"); // biar PUT juga aman
@@ -35,7 +34,7 @@ $routes->get("user/showName/(:any)", 'User::showName/$1');
 $routes->get("/user", "User::index");
 $routes->post("/riwayatCuti", "RiwayatMhs::getCuti");
 $routes->post("/mhsberanda", "MhsBeranda::getMahasiswa");
-$routes->post("/pengajuancuti", "PengajuanCuti::getMahasiswaCuti");
+$routes->get("/pengajuancuti", "PengajuanCuti::getMahasiswaCuti");
 $routes->post("/riwayatadmin", "RiwayatAdmin::getRiwayatAdmin");
 $routes->post("/viewberandamahasiswa", "BerandaMhs::getBerandaMahasiswa");
 $routes->post("/viewriwayatadmin", "RiwayatAdmView::getRiwayatAdmin");
