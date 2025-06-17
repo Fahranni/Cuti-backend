@@ -130,5 +130,3 @@ Untuk Uji API di Postman
 - PUT ```http://localhost:8080/admin/{id_admin}```
 
 - DELETE ```http://localhost:8080/admin/{id_admin}```
-
-Selesai. Proyek backend API Anda sekarang seharusnya sudah berjalan. Jika Anda mengalami masalah, lihat Panduan Pengguna CodeIgniter 4 atau cari bantuan dari komunitas atau internet.
