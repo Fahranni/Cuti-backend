@@ -11,6 +11,7 @@ class MahasiswaModel extends Model
     protected $allowedFields = [
         "npm",
         "id_user",
+        "id_dosen",//ubah ini
         "id_kajur",
         "nama_mahasiswa",
         "tempat_tanggal_lahir",

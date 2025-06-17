@@ -45,7 +45,7 @@ class Kajur extends BaseController
 
     public function create()
     {
-        $data = $this->request->getPost();
+        $data = $this->request->getJSON(true);
 
         // Validasi: cek apakah id_user dan username sesuai di tabel user
         $userCheck = $this->userModel
@@ -104,8 +104,15 @@ class Kajur extends BaseController
 
     public function update($id = null)
     {
-        $data = $this->request->getRawInput();
+        $data = $this->request->getJSON(true) ?? $this->request->getRawInput();//ubah
+
         $data["id_kajur"] = $id;
+
+        if (!isset($data["id_user"]) || !isset($data["nama_kajur"])) {
+        return $this->fail([
+            "message" => "id_user dan nama_kajur wajib diisi saat update"
+        ], 400);
+    }
 
         // Check if record exists in admin table
         $ifExist = $this->kajurModel->where("id_kajur", $id)->findAll();

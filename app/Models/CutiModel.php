@@ -10,12 +10,15 @@ class CutiModel extends Model
     protected $primaryKey = "id_cuti"; // <--- WAJIB ADA!
 
     protected $allowedFields = [
+        "id_cuti",
         "npm",
         "semester",
         "tgl_pengajuan",
         "dokumen_pendukung",
         "alasan",
         "status",
+        "id_user",
+        "nama_mahasiswa",
 
         // tambahkan semua kolom lain yang boleh diisi
     ];

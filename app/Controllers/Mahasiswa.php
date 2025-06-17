@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
-use App\Models\DosenModel;
+//use App\Models\DosenModel;
 use App\Models\KajurModel;
 use App\Models\MahasiswaModel;
 use CodeIgniter\API\ResponseTrait;
@@ -20,13 +20,13 @@ class Mahasiswa extends BaseController
     use ResponseTrait;
     protected $userModel;
     protected $mahasiswaModel;
-    protected $dosenModel;
+    //protected $dosenModel;
     protected $kajurModel;
 
     public function __construct()
     {
         $this->userModel = new UserModel();
-        $this->dosenModel = new DosenModel();
+       // $this->dosenModel = new DosenModel();
         $this->mahasiswaModel = new MahasiswaModel();
         $this->kajurModel = new KajurModel();
     }
@@ -79,7 +79,7 @@ class Mahasiswa extends BaseController
 
     public function create()
     {
-        $data = $this->request->getPost();
+        $data = $this->request->getJSON(true);//diubah
 
         $npmCheck = $this->mahasiswaModel->where("npm", $data["npm"])->first();
         if ($npmCheck) {
@@ -125,8 +125,15 @@ class Mahasiswa extends BaseController
 
     public function update($id = null)
     {
-        $data = $this->request->getRawInput();
+       $data = $this->request->getJSON(true);//diubah
         $data["npm"] = $id;
+
+        //tambahan code
+        if (!isset($data['id_user']) || !isset($data['nama_mahasiswa'])) {
+        return $this->fail([
+            "message" => "id_user dan nama_mahasiswa harus disertakan"
+        ], 400);
+        }
 
         $ifExist = $this->mahasiswaModel->where("npm", $id)->findAll();
         if (!$ifExist) {
@@ -154,6 +161,9 @@ class Mahasiswa extends BaseController
                 400
             );
         }
+        $this->mahasiswaModel->update($id, $data);
+        return $this->respond(["message" => "Data berhasil diperbarui"]);
+    
 
         $kajurCheck = $this->kajurModel
             ->where("id_kajur", $data["id_kajur"])

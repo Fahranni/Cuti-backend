@@ -106,7 +106,7 @@ class Cuti extends BaseController
         }
 
         // Simpan data ke tabel cuti
-        if (!$this->cutiModel->save($data)) {
+        if (!$this->cutiModel->update($data)) {
             return $this->fail($this->cutiModel->errors());
         }
 
@@ -123,7 +123,12 @@ class Cuti extends BaseController
     // METHOD create() yang lama tetap ada untuk POST /cuti (tanpa npm di URL)
     public function create()
     {
-        $data = $this->request->getPost();
+        //tambahin ini
+        $data = $this->request->getJSON(true);
+        if (!isset($data['npm']) || !$data['npm']) {
+        return $this->fail(['message' => 'Field NPM wajib diisi'], 400);
+        }
+        
         $mahasiswaCheck = $this->mahasiswaModel
             ->where("npm", $data["npm"])
             ->first();
@@ -164,40 +169,52 @@ class Cuti extends BaseController
     }
 
     public function update($id = null)
-    {
-        $data = $this->request->getRawInput();
-        $data["id_cuti"] = $id;
+{
+    $data = $this->request->getJSON(true);
 
-        $ifExist = $this->cutiModel->where("id_cuti", $id)->first();
-        if (!$ifExist) {
-            return $this->failNotFound("Data tidak ditemukan");
-        }
 
-        $mahasiswaCheck = $this->mahasiswaModel
-            ->where("npm", $data["npm"])
-            ->first();
-        if (!$mahasiswaCheck) {
-            return $this->fail(
-                [
-                    "message" => "NPM tidak ditemukan di tabel mahasiswa",
-                ],
-                400
-            );
-        }
-
-        if (!$this->cutiModel->save($data)) {
-            return $this->fail($this->cutiModel->errors());
-        }
-
-        $response = [
-            "status" => 200,
-            "error" => null,
-            "message" => [
-                "success" => "Berhasil Mengubah Data",
-            ],
-        ];
-        return $this->respond($response, 200);
+    // Pastikan data ada
+    if (!$data) {
+        return $this->fail('Data kosong atau tidak valid', 400);
     }
+
+    // Validasi ID
+    $ifExist = $this->cutiModel->where("id_cuti", $id)->first();
+    if (!$ifExist) {
+        return $this->failNotFound("Data tidak ditemukan");
+    }
+
+    // Validasi mahasiswa
+    $mahasiswaCheck = $this->mahasiswaModel
+        ->where("npm", $data["npm"])
+        ->first();
+    if (!$mahasiswaCheck) {
+        return $this->fail(
+            ["message" => "NPM tidak ditemukan di tabel mahasiswa"],
+            400
+        );
+    }
+
+    // Jangan kirim primary key ke update
+    unset($data['id_cuti']);
+
+    // Lakukan update eksplisit
+    if (!$this->cutiModel->update($id, $data)) {
+        return $this->fail($this->cutiModel->errors());
+    }
+
+    // Pastikan data benar-benar berubah
+    if ($this->cutiModel->db->affectedRows() === 0) {
+        return $this->fail("Data tidak berubah", 400);
+    }
+
+    return $this->respond([
+        "status" => 200,
+        "error" => null,
+        "message" => "Data berhasil diperbarui"
+    ]);
+}
+
 
     public function delete($id = null)
     {

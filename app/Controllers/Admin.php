@@ -40,7 +40,7 @@ class Admin extends BaseController
 
     public function create()
     {
-        $data = $this->request->getPost();
+        $data = $this->request->getJSON(true);
 
         // Validasi: cek apakah id_user dan username sesuai di tabel user
         $userCheck = $this->userModel->where('id_user', $data['id_user'])
@@ -72,6 +72,12 @@ class Admin extends BaseController
     {
         $data = $this->request->getRawInput();
         $data['id_admin'] = $id;
+        //tambah ini
+        if (!isset($data['id_user']) || !isset($data['nama_admin'])) {
+        return $this->fail([
+            "message" => "id_user dan nama_admin wajib diisi saat update"
+        ], 400);
+    }
 
 
         $ifExist = $this->adminModel->where('id_admin', $id)->findAll();

@@ -11,7 +11,7 @@ class KajurModel extends Model
     protected $allowedFields = [
         "id_user",
         "nama_kajur",
-        "nidn",
+        "nip",
         "nama_jurusan",
     ];
 }
