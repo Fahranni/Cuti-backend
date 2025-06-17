@@ -1,18 +1,3 @@
-# 🎉 Selamat Datang di Proyek Backend API - CodeIgniter 4 🎉
-
-Proyek ini adalah backend API yang dibangun menggunakan framework CodeIgniter 4. API ini dirancang untuk mengelola data mahasiswa, ketua jurusan (kajur), cuti, pengguna, dan admin dengan performa optimal. Ikuti panduan ini untuk menyiapkan dan menjalankan proyek di mesin lokal Anda dengan mudah!
-
-# 📋 Prasyarat
-
-Sebelum memulai, pastikan Anda telah menginstal perangkat lunak berikut:
-
-- PHP 7.3 atau lebih tinggi
-
-- Composer (untuk mengelola dependensi)
-
-- MySQL (untuk database)
-
-- Apache (opsional, untuk lingkungan produksi)
 
 # 🛠️ Langkah-langkah Penyiapan
 
@@ -69,14 +54,22 @@ Jalankan perintah berikut untuk menginstal dependensi proyek menggunakan Compose
 ```composer install```
 
 6. Buat Database
-
-Buat database secara manual di MySQL menggunakan alat seperti phpMyAdmin atau terminal MySQL, atau impor dari DB Engineer (https://github.com/andinardelinaa/database). Pastikan nama database sesuai dengan yang ada di `.env`.
+ impor dari DB Engineer (https://github.com/andinardelinaa/database). Pastikan nama database sesuai dengan yang ada di `.env`.
 
 7. Jalankan Migrasi Database
 
 Siapkan tabel database dengan menjalankan migrasi:
 
 ```php spark migrate```
+
+# Clone
+1. Masuk ke folder
+   ```cd C:\laragon\www```
+2. ```Buat Folder PBF-Baru```
+3. clone repository
+``` git clone https://github.com/Alledanaralle/PBF.git PBF-baru ```
+4. Instal Composer
+5. Buat model ```php spark make:model namaController```
 
 # 🚀 Menjalankan Server
 
@@ -85,18 +78,6 @@ Untuk pengembangan lokal, Anda dapat menggunakan server PHP bawaan:
 ```php spark serve```
 
 Server akan berjalan di http://localhost:8080 secara default. Anda dapat mengakses endpoint API dari URL ini.
-
-Untuk lingkungan produksi, konfigurasikan Apache untuk melayani direktori public dari proyek. Pastikan document root mengarah ke direktori public dan atur virtual host jika diperlukan.
-
-# 🧪 Menguji API
-
-Uji endpoint API menggunakan alat seperti Postman atau curl. Contohnya, untuk membuat permintaan GET ke /api/users, gunakan:
-
-```curl http://localhost:8080/api/users```
-
-Ganti /api/users dengan endpoint API yang ingin Anda uji misal
-
-```http://localhost:8080/mahasiswa```.
 
 Untuk Uji API di Postman
 
